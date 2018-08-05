@@ -1,3 +1,5 @@
+import wordList from './wordlist';
+
 // From https://oli.me.uk/2013/06/08/searching-javascript-arrays-with-a-binary-search/
 function binaryIndexOf(searchElement) {
     'use strict';
@@ -71,7 +73,7 @@ var caesarShift = function(str, amount) {
 
 
 function update() {
-    var inputElmn = document.getElementById("input");
+    var inputElmn = document.getElementById('input');
     var inp = inputElmn.value;
 
     var htmlArray = [];
@@ -86,7 +88,7 @@ function update() {
             '<td>', caesarShift(word, -rotate), '</td>',
             '</tr>'
         );
-    })
+    });
     htmlArray.push('</table>');
 
     var outputElmn = document.getElementById('output');
@@ -104,7 +106,7 @@ function word2vec(word) {
     return vec;
 }
 
-const wordVectorList = []
+const wordVectorList = [];
 wordList.forEach(w => {
     wordVectorList.push(word2vec(w));
 });
@@ -131,7 +133,7 @@ function findAllCandidate(w) {
     const candidates = [];
 
     const vi = new Array(arrs.length).fill(0);
-    while(true) {
+    for(;;) {
         const chArr = [];
         for(let i = 0 ; i < vi.length ; i++) {
             chArr.push(arrs[i][vi[i]]);
@@ -146,7 +148,9 @@ function findAllCandidate(w) {
         }
         if(cursor == arrs.length) break;
     }
-    candidates.sort();
+    candidates.sort((a, b) => {
+        return Math.abs(a[0]) - Math.abs(b[0]);
+    });
     return candidates;
 }
 
