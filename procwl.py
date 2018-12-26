@@ -14,11 +14,9 @@ words = [(w2v(w), w) for w in words]
 words.sort()
 
 with open('wordlist.js', 'w') as wf:
-    wf.write("var wordList = [\n")
+    wf.write("window.wordList = [\n")
     for w in words:
         wf.write("    \"%s\",\n" % w[1])
     wf.write("""\
 ];
-
-if (typeof module !== 'undefined') module.exports = wordList;
 """)

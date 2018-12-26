@@ -1,18 +1,18 @@
-import wordList from './wordlist';
+// import wordList from './wordlist';
 
 // From https://oli.me.uk/2013/06/08/searching-javascript-arrays-with-a-binary-search/
 function binaryIndexOf(searchElement) {
     'use strict';
- 
+
     var minIndex = 0;
     var maxIndex = this.length - 1;
     var currentIndex;
     var currentElement;
- 
+
     while (minIndex <= maxIndex) {
         currentIndex = (minIndex + maxIndex) / 2 | 0;
         currentElement = this[currentIndex];
- 
+
         if (currentElement < searchElement) {
             minIndex = currentIndex + 1;
         }
@@ -23,7 +23,7 @@ function binaryIndexOf(searchElement) {
             return currentIndex;
         }
     }
- 
+
     return -1;
 }
 
@@ -72,7 +72,7 @@ var caesarShift = function(str, amount) {
 };
 
 
-function update() {
+function update () {
     var inputElmn = document.getElementById('input');
     var inp = inputElmn.value;
 
@@ -80,11 +80,11 @@ function update() {
     htmlArray.push('<table><thead><th>Shift</th><th>Word</th><th>Shifted</th></thead>');
     var candidates = findAllCandidate(inp);
     candidates.forEach(args => {
-        const [rotate, word] = args;
+        const [rotate, repr, word] = args;
         htmlArray.push(
             '<tr>',
             '<td>', rotate.toString(), '</td>',
-            '<td>', word, '</td>',
+            '<td>', repr, '</td>',
             '<td>', caesarShift(word, -rotate), '</td>',
             '</tr>'
         );
@@ -107,7 +107,7 @@ function word2vec(word) {
 }
 
 const wordVectorList = [];
-wordList.forEach(w => {
+window.wordList.forEach(w => {
     wordVectorList.push(word2vec(w));
 });
 
@@ -158,6 +158,7 @@ function findWordCandidate(w) {
     const baseV = word2vec(w);
     const candidates = [];
     for(let rotate = -12 ; rotate < 13 ; rotate++) {
+    // for(let rotate = 0 ; rotate == 0; rotate++) {
         const v = rotateVec(baseV, rotate);
         const baseIndex = wordVectorList.binaryIndexOf(v);
         if(baseIndex == -1) continue;
@@ -171,9 +172,13 @@ function findWordCandidate(w) {
         maxIndex--;
 
         for(let index = minIndex ; index <= maxIndex ; index++) {
+            const latin = window.wordList[index];
+            let repr = latin;
+            if (korMapper[w]) repr = korMapper[w].join(', ');
             candidates.push([
                 rotate,
-                wordList[index],
+                latin,
+                repr,
             ]);
         }
     }
