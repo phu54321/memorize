@@ -174,12 +174,18 @@ function findWordCandidate(w) {
         for(let index = minIndex ; index <= maxIndex ; index++) {
             const latin = window.wordList[index];
             let repr = latin;
-            if (korMapper[w]) repr = korMapper[w].join(', ');
             candidates.push([
                 rotate,
                 latin,
                 repr,
             ]);
+            if (korMapper[w]){
+                candidates.push([
+                    rotate,
+                    latin,
+                    korMapper[w].join(', '),
+                ]);
+            } 
         }
     }
     return candidates;
